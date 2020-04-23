@@ -74,7 +74,7 @@ class BlackJack:
                     self.over_21=False
                     self.current_bet=0
                     self.player_hit=False
-                    if self.bankroll<0:
+                    if self.bankroll<=0:
                         self.bankroll=1000
                                  
                     
