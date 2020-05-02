@@ -6,22 +6,10 @@ from Cards import Cards
 
 
 class BlackJack:
-    bankroll=1000
     current_bet=0
     def __init__(self):
         ''' Initialize the game and settings from Settings class'''
         pygame.init()
-        self.font = pygame.font.Font(None, 32)
-        
-        ''' Initalize flags and other variables'''
-        self.intro=True
-        self.bet_stage=False
-        self.play_stage=False
-        self.end_stage=False
-        self.player_has_hit=False
-        self.over_21=False
-        self.player_hit=False
-    
         
         ''' Set up the game screen'''
         self.intro_screen=pygame.display.set_mode((0,0),
@@ -50,9 +38,9 @@ class BlackJack:
 
     def _check_status_of_game(self):
         if self.playerscreen.points_cards>21:
-            self.end_stage=True
-            self.play_stage=False
-            self.over_21=True
+            self.settings.end_stage=True
+            self.settings.play_stage=False
+            self.settings.over_21=True
 
             
     def _check_events(self):
@@ -66,27 +54,27 @@ class BlackJack:
                     
                 if event.key == pygame.K_r:
                     # Start a new round
-                    self.bet_stage=True
-                    self.end_stage=False
+                    self.settings.bet_stage=True
+                    self.settings.end_stage=False
                     self.computerscreen.remake_cards()
                     self.playerscreen.remake_cards()
                     self.computerscreen.stage="Player"
-                    self.over_21=False
+                    self.settings.over_21=False
                     self.current_bet=0
-                    self.player_hit=False
-                    if self.bankroll<=0:
-                        self.bankroll=1000
+                    self.settings.player_hit=False
+                    if self.settings.bankroll<=0:
+                        self.settings.bankroll=1000
                                  
                     
                 elif event.key==pygame.K_q:
                     sys.exit()
                     
-            if event.type== pygame.MOUSEBUTTONDOWN and event.button == 1 and self.intro==True:
+            if event.type== pygame.MOUSEBUTTONDOWN and event.button == 1 and self.settings.intro==True:
                 mouse=pygame.mouse.get_pos()
                 if mouse[0]in range ( self.settings.screen_rect[2]//5  - self.intro_play.get_rect ()[2]//2,
                                       self.settings.screen_rect[2]//5  - self.intro_play.get_rect ()[2]//2 + self.intro_play.get_rect()[2] ) and mouse[1]in range ( self.settings.screen_rect.center[1] - self.intro_play.get_rect ()[3]//2,self.settings.screen_rect.center[1] - self.intro_play.get_rect ()[3]//2 + self.intro_play.get_rect()[3]):
-                    self.bet_stage=True
-                    self.intro=False
+                    self.settings.bet_stage=True
+                    self.settings.intro=False
                 if mouse[0]in range ( self.settings.screen_rect[2]*4//5 - self.intro_quit.get_rect ()[2]//2,
                                       self.settings.screen_rect[2]*4//5 - self.intro_quit.get_rect ()[2]//2 + self.intro_quit.get_rect()[2] ) and mouse[1]in range(
                                           self.settings.screen_rect.center[1] - self.intro_quit.get_rect ()[3]//2,
@@ -94,54 +82,54 @@ class BlackJack:
                     sys.exit()                    
                 
                 
-            if event.type== pygame.MOUSEBUTTONDOWN and event.button == 1 and self.bet_stage==True:
+            if event.type== pygame.MOUSEBUTTONDOWN and event.button == 1 and self.settings.bet_stage==True:
                 mouse=pygame.mouse.get_pos()
                 
                 if mouse[0]in range (  self.bet_done_x
                                        ,self.bet_done_x+self.bet_done.get_rect()[2]) and  mouse[1]in range ( self.bet_done_y,
                                                                                                              self.bet_done_y+self.bet_done.get_rect()[3]):
-                    self.play_stage=True
-                    self.bet_stage=False
+                    self.settings.play_stage=True
+                    self.settings.bet_stage=False
                     
                 if mouse[0]in range (  self.bet_100_x
                                        ,self.bet_100_x+self.bet_100.get_rect()[2]) and  mouse[1]in range ( self.bet_100_y,
                                                                                                              self.bet_100_y+self.bet_100.get_rect()[3]):
                     self.current_bet+=100
-                    if self.current_bet>self.bankroll:
-                        self.current_bet=self.bankroll
+                    if self.current_bet>self.settings.bankroll:
+                        self.current_bet=self.settings.bankroll
                 
                 if mouse[0]in range (  self.bet_200_x
                                        ,self.bet_200_x+self.bet_done.get_rect()[2]) and  mouse[1]in range ( self.bet_200_y,
                                                                                                              self.bet_200_y+self.bet_200.get_rect()[3]):
                     self.current_bet+=200
-                    if self.current_bet>self.bankroll:
-                        self.current_bet=self.bankroll
+                    if self.current_bet>self.settings.bankroll:
+                        self.current_bet=self.settings.bankroll
 
                 if mouse[0]in range (  self.bet_500_x
                                        ,self.bet_500_x+self.bet_500.get_rect()[2]) and  mouse[1]in range ( self.bet_500_y,
                                                                                                              self.bet_500_y+self.bet_500.get_rect()[3]):
                     self.current_bet+=500
-                    if self.current_bet>self.bankroll:
-                        self.current_bet=self.bankroll
+                    if self.current_bet>self.settings.bankroll:
+                        self.current_bet=self.settings.bankroll
 
                 if mouse[0]in range (  self.bet_reset_x
                                        ,self.bet_reset_x+self.bet_reset.get_rect()[2]) and  mouse[1]in range ( self.bet_reset_y,
                                                                                                              self.bet_reset_y+self.bet_reset.get_rect()[3]):
                     self.current_bet=0
 
-            if event.type== pygame.MOUSEBUTTONDOWN and event.button == 1 and self.play_stage==True:
+            if event.type== pygame.MOUSEBUTTONDOWN and event.button == 1 and self.settings.play_stage==True:
                 mouse=pygame.mouse.get_pos()
            
                 if mouse[0]in range (  self.screen_rect.center[0]//2-self.play_hit.get_rect()[2]//2
                                        ,self.screen_rect.center[0]//2-self.play_hit.get_rect()[2]//2+self.play_hit.get_rect()[2]) and  mouse[1]in range ( int(self.screen_rect.center[1]*1.6),
                                                                                                              int(self.screen_rect.center[1]*1.6)+self.play_hit.get_rect()[3]):
-                    self.player_has_hit=True
+                    self.settings.player_has_hit=True
                     self.playerscreen.hit_card()
-                    self.player_hit=True
+                    self.settings.player_hit=True
 
                 if mouse[0]in range (  self.screen_rect.center[0]-self.play_double.get_rect()[2]//2
                                        ,self.screen_rect.center[0]-self.play_double.get_rect()[2]//2+self.play_double.get_rect()[2]) and  mouse[1]in range ( int(self.screen_rect.center[1]*1.6),
-                                                                                                             int(self.screen_rect.center[1]*1.6)+self.play_double.get_rect()[3]) and self.player_hit==False:
+                                                                                                             int(self.screen_rect.center[1]*1.6)+self.play_double.get_rect()[3]) and self.settings.player_hit==False:
                     self.playerscreen.hit_card()
                     self.computerscreen.stage="Dealer"
                     self.current_bet*=2
@@ -167,9 +155,9 @@ class BlackJack:
         self.intro_rect.center=self.screen_rect.center
         
         ''' Bet Screen elements'''
-        self.bet_bankroll=self.font.render(f"Your current bankroll is: {self.bankroll}",True, (0,0,0))
-        self.bet_bet=self.font.render(f"Your current bet is: {self.current_bet}", True, (0,0,0))
-        self.bet_text=self.font.render("Please make your bets!", True, (0,0,0))
+        self.bet_bankroll=self.settings.font.render(f"Your current bankroll is: {self.settings.bankroll}",True, (0,0,0))
+        self.bet_bet=self.settings.font.render(f"Your current bet is: {self.current_bet}", True, (0,0,0))
+        self.bet_text=self.settings.font.render("Please make your bets!", True, (0,0,0))
         
         self.bet_100=pygame.image.load("Pictures/100.png")
         self.bet_200=pygame.image.load("Pictures/200.png")
@@ -200,7 +188,7 @@ class BlackJack:
         self.play_stand=pygame.image.load("Pictures/Stand.png")   
 
         
-        if self.intro==True:
+        if self.settings.intro==True:
             self.intro_screen.fill ( self.settings.bg_color_intro_game )
             
 
@@ -225,7 +213,7 @@ class BlackJack:
                                    ( self.settings.screen_rect.center[0] - self.intro_cards.get_rect ()[2]/2
                                     ,self.settings.screen_rect.center[1] - self.intro_cards.get_rect ()[3]/2))
 
-        if self.bet_stage==True:
+        if self.settings.bet_stage==True:
 
             self.bet_screen.fill(self.settings.bg_color_bet_game)
             
@@ -264,7 +252,7 @@ class BlackJack:
                                   self.bet_reset_y))
             
      
-        if self.play_stage==True:
+        if self.settings.play_stage==True:
             if self.playerscreen.points_cards==21:
                 self.computerscreen.stage="Dealer"
                 
@@ -278,7 +266,7 @@ class BlackJack:
             
             self.screen.blit(self.play_hit,(self.screen_rect.center[0]//2-self.play_hit.get_rect()[2]//2,
                                             self.screen_rect.center[1]*1.6))
-            if self.player_hit==False:
+            if self.settings.player_hit==False:
                 self.screen.blit(self.play_double,(self.screen_rect.center[0]-self.play_double.get_rect()[2]//2,
                                                 self.screen_rect.center[1]*1.6))
             
@@ -291,26 +279,26 @@ class BlackJack:
                 if self.computerscreen.points_cards<17:
                     self.computerscreen.hit_card()
                 if self.computerscreen.points_cards>16:
-                    self.play_stage=False
-                    self.end_stage=True
+                    self.settings.play_stage=False
+                    self.settings.end_stage=True
                     
                     
-        if self.end_stage==True:
+        if self.settings.end_stage==True:
             self.end_screen.fill((self.settings.bg_color_end_stage))
             self.end_screen_rect=self.end_screen.get_rect()
             
-            self.lost_text=self.font.render("Sorry, you lost this hand! Press R to play a new hand or Q to exit!",True,(230,230,230))
-            self.win_text=self.font.render(f"Congratulations, you won {self.current_bet} coins! Press R to play a new hand or Q to exit!",True,(230,230,230))
+            self.lost_text=self.settings.font.render("Sorry, you lost this hand! Press R to play a new hand or Q to exit!",True,(230,230,230))
+            self.win_text=self.settings.font.render(f"Congratulations, you won {self.current_bet} coins! Press R to play a new hand or Q to exit!",True,(230,230,230))
             self.playerscreen.blitme()
             self.computerscreen.blitme()
-            if self.over_21==True or (self.playerscreen.points_cards<=self.computerscreen.points_cards and self.computerscreen.points_cards<22):
+            if self.settings.over_21==True or (self.playerscreen.points_cards<=self.computerscreen.points_cards and self.computerscreen.points_cards<22):
                 self.end_screen.blit(self.lost_text,(self.end_screen_rect.center[0],self.end_screen_rect.center[1]-self.lost_text.get_rect()[3]//2))
-                self.bankroll-=self.current_bet
-                self.end_stage=False
-            if (self.playerscreen.points_cards>self.computerscreen.points_cards and self.over_21==False) or (self.playerscreen.points_cards<22 and self.computerscreen.points_cards>21):
+                self.settings.bankroll-=self.current_bet
+                self.settings.end_stage=False
+            if (self.playerscreen.points_cards>self.computerscreen.points_cards and self.settings.over_21==False) or (self.playerscreen.points_cards<22 and self.computerscreen.points_cards>21):
                 self.end_screen.blit(self.win_text,(self.end_screen_rect.center[0],self.end_screen_rect.center[1]-self.win_text.get_rect()[3]//2))
-                self.bankroll+=self.current_bet
-                self.end_stage=False
+                self.settings.bankroll+=self.current_bet
+                self.settings.end_stage=False
 
         # Make the most recently drawn screen visible
         pygame.display.flip()    

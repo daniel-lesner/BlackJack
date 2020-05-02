@@ -1,8 +1,15 @@
 ## This module has the size method which returns the length and weight of the computer's screen
 import pyautogui
+import pygame
 
 class Settings:
     def __init__(self,game):
+        # Set inital bankroll
+        self.bankroll=1000
+
+        # Set the ingame text font and size
+        self.font = pygame.font.Font(None, 52)
+
         # Pair the settings with the main screen
         self.screen_rect=game.screen.get_rect()
         
@@ -28,3 +35,13 @@ class Settings:
 
         self.computer_screen_length=self.screen_length//3
         self.computer_screen_heigth=self.screen_height//5
+
+
+        ''' Initalize flags and other variables'''
+        self.intro=True
+        self.bet_stage=False
+        self.play_stage=False
+        self.end_stage=False
+        self.player_has_hit=False
+        self.over_21=False
+        self.player_hit=False
