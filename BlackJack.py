@@ -98,24 +98,21 @@ class BlackJack:
             if event.type== pygame.MOUSEBUTTONDOWN and event.button == 1 and self.settings.play_stage == True:
                 mouse=pygame.mouse.get_pos()
            
-                if mouse[0]in range (  self.screen_rect.center[0]//2-self.play_hit.get_rect()[2]//2
-                                       ,self.screen_rect.center[0]//2-self.play_hit.get_rect()[2]//2+self.play_hit.get_rect()[2]) and  mouse[1]in range ( int(self.screen_rect.center[1]*1.6),
-                                                                                                             int(self.screen_rect.center[1]*1.6)+self.play_hit.get_rect()[3]):
+                if (mouse[0]in range (  self.play_hit_x,self.play_hit_x + self.play_hit.get_rect()[2]) 
+                and  mouse[1]in range ( self.play_hit_y, self.play_hit_y+self.play_hit.get_rect()[3])):
                     self.settings.player_has_hit=True
                     self.playerscreen.hit_card()
                     self.settings.player_hit=True
 
-                if mouse[0]in range (  self.screen_rect.center[0]-self.play_double.get_rect()[2]//2
-                                       ,self.screen_rect.center[0]-self.play_double.get_rect()[2]//2+self.play_double.get_rect()[2]) and  mouse[1]in range ( int(self.screen_rect.center[1]*1.6),
-                                                                                                             int(self.screen_rect.center[1]*1.6)+self.play_double.get_rect()[3]) and self.settings.player_hit==False:
+                if (mouse[0]in range (  self.play_double_x ,self.play_double_x+self.play_double.get_rect()[2]) 
+                                       and  mouse[1]in range ( self.play_double_y, self.play_double_y+self.play_double.get_rect()[3]) 
+                                       and self.settings.player_hit==False):
                     self.playerscreen.hit_card()
                     self.computerscreen.stage="Dealer"
                     self.settings.current_bet*=2
 
-                if mouse[0]in range (  int(self.screen_rect.center[0]*1.5-self.play_stand.get_rect()[2]//2)
-                                       ,int(self.screen_rect.center[0]*1.5-self.play_stand.get_rect()[2]//2)+self.play_stand.get_rect()[2]) and  mouse[1]in range ( int(self.screen_rect.center[1]*1.6),
-                                                                                                             int(self.screen_rect.center[1]*1.6)+self.play_stand.get_rect()[3]):
-
+                if (mouse[0]in range (  self.play_stand_x, self.play_stand_x + self.play_stand.get_rect()[2]) 
+                and  mouse[1]in range ( self.play_stand_y, self.play_stand_y + self.play_stand.get_rect()[3])):
                      self.computerscreen.stage="Dealer"
 
     def _update_screen(self):
@@ -165,15 +162,14 @@ class BlackJack:
         self.play_double=pygame.image.load("Pictures/Double.png")            
         self.play_stand=pygame.image.load("Pictures/Stand.png")
 
-        # self.play_hit_x =
-        # self.play_hit_y =
+        self.play_hit_x = int(self.screen_rect.center[0]//2-self.play_hit.get_rect()[2]//2)
+        self.play_hit_y = int(self.screen_rect.center[1]*1.5)
 
-        # self.play_double_x =
-        # self.play_doube.y =
+        self.play_double_x = int(self.screen_rect.center[0]-self.play_double.get_rect()[2]//2)
+        self.play_double_y = int(self.screen_rect.center[1]*1.6)
 
-        # self.play_stand_x =
-        # self.play_stand_y =
-
+        self.play_stand_x = int(self.screen_rect.center[0]*1.5-self.play_stand.get_rect()[2]//2)
+        self.play_stand_y = int(self.screen_rect.center[1]*1.5)
         
         if self.settings.intro==True:
             self.screen.fill ( self.settings.bg_color_intro_game )
@@ -251,15 +247,15 @@ class BlackJack:
             self.playerscreen.blitme()
             self.computerscreen.blitme()
             
-            self.screen.blit(self.play_hit,(self.screen_rect.center[0]//2-self.play_hit.get_rect()[2]//2,
-                                            self.screen_rect.center[1]*1.6))
+            self.screen.blit(self.play_hit,(self.play_hit_x,
+                                            self.play_hit_y))
             if self.settings.player_hit==False:
-                self.screen.blit(self.play_double,(self.screen_rect.center[0]-self.play_double.get_rect()[2]//2,
-                                                self.screen_rect.center[1]*1.6))
+                self.screen.blit(self.play_double,(self.play_double_y,
+                                                self.play_double_y))
             
             
-            self.screen.blit(self.play_stand,(self.screen_rect.center[0]*1.5-self.play_stand.get_rect()[2]//2,
-                                            self.screen_rect.center[1]*1.6))
+            self.screen.blit(self.play_stand,(self.play_stand_x,
+                                            self.play_stand_y))
             
             
             if self.computerscreen.stage=="Dealer":
