@@ -5,7 +5,7 @@ from settings import Settings
 
 
 class Cards:
-    def __init__(self,bj_game,player):
+    def __init__(self,screen,player):
         ### Initialize flags and other variables
         self.player=player
         self.stage="Player"
@@ -32,7 +32,7 @@ class Cards:
         self.player_cards= [
             self.all_cards[random.randint(4,55)],self.all_cards[random.randint(4,55)]]
          
-        self.screen=bj_game.screen
+        self.screen=screen.screen
         self.screen_rect=self.screen.get_rect()
         self.settings=Settings(self)
         
