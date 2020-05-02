@@ -45,3 +45,4 @@ class Settings:
         self.player_has_hit=False
         self.over_21=False
         self.player_hit=False
+        self.current_bet=0

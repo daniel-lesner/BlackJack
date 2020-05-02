@@ -6,23 +6,26 @@ from settings import Settings
 
 class Cards:
     def __init__(self,bj_game,player):
-        ### RETRIEVE CARDS FROM THE CARDSMAKING CLASS
-        self.cards=["Asmall",2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
-        self.points_1=[1,2,3,4,5,6,7,8,9,10,10,10,10,11]*4
-        self.points_1=sorted(self.points_1)
-        self.colours=["HEARTS","DIAMONDS","SPADES","CLUBS"]
+        ### Initialize flags and other variables
+        self.player=player
+        self.stage="Player"
+        self.hit_hit=False
+        self.points_cards=0
+
+
+        ### Create a dictionary with each card and its corresponding number of points
         self.all_cards=[]
         self.points={}
-        self.stage="Player"
-        self.player=player
-        self.points_cards=0
-        
+        self.cards=["Asmall",2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
+        self.nr_points=sorted([1,2,3,4,5,6,7,8,9,10,10,10,10,11]*4)
+        self.colours=["HEARTS","DIAMONDS","SPADES","CLUBS"]
+
         for i in self.cards:
             for j in self.colours:
                 self.all_cards.append(f"{i} of {j}")
 
         for i in self.all_cards:
-            self.points[i]=self.points_1[self.all_cards.index(i)]        
+            self.points[i]=self.nr_points[self.all_cards.index(i)]    
         
         
         ### DEAL A SET OF RANDOM CARDS
@@ -31,11 +34,9 @@ class Cards:
          
         self.screen=bj_game.screen
         self.screen_rect=self.screen.get_rect()
-        self.font = pygame.font.Font(None, 32)
         self.settings=Settings(self)
         
-        self.hit_hit=False
-        self.stage="Player"
+
 
     def remake_cards(self):
         self.points_cards=0
@@ -88,7 +89,7 @@ class Cards:
                 self.screen.blit(self.xyz,self.position_of_cards[self.list_of_cards.index(md)])
             
             
-            self.text=self.font.render(
+            self.text=self.settings.font.render(
                 f" {self.player} has {self.points_cards} points!",
                 True, (255, 255, 255)
                 )
@@ -114,7 +115,7 @@ class Cards:
                 self.position_of_cards.append(self.y)            
             
             if self.stage=="Player":
-                self.text2=self.font.render(
+                self.text2=self.settings.font.render(
                     f" {self.player} has at least {self.points[self.player_cards[0]]} points!",
                     True, (255, 255, 255)
                     )
@@ -127,7 +128,7 @@ class Cards:
                 self.screen.blit(self.xyz,self.position_of_cards[0])
                 
             else:
-                self.text2=self.font.render(
+                self.text2=self.settings.font.render(
                     f" {self.player} has {self.points_cards} points!",
                     True, (255, 255, 255)
                     )
