@@ -91,7 +91,7 @@ class Cards:
             
             self.text=self.settings.font.render(
                 f" {self.player} has {self.points_cards} points!",
-                True, (255, 255, 255)
+                True, self.settings.text_color
                 )
             
             self.screen.blit(self.text,(
@@ -117,7 +117,7 @@ class Cards:
             if self.stage=="Player":
                 self.text2=self.settings.font.render(
                     f" {self.player} has at least {self.points[self.player_cards[0]]} points!",
-                    True, (255, 255, 255)
+                    True, self.settings.text_color
                     )
                 
                 self.screen.blit(self.text2,(
@@ -130,7 +130,7 @@ class Cards:
             else:
                 self.text2=self.settings.font.render(
                     f" {self.player} has {self.points_cards} points!",
-                    True, (255, 255, 255)
+                    True, self.settings.text_color
                     )
                 
                 self.screen.blit(self.text2,(

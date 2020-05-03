@@ -24,7 +24,7 @@ class Pictures:
 
         # Initalize flags and other variables
         self.intro = True
-        self.bet_stage = self.play_stage = self.end_stage = self.player_has_hit = self.over_21 = self.player_hit = False
+        self.bet_stage = self.play_stage = self.end_stage = self.player_has_hit = self.over_21 = self.player_hit = self.update = False
         self.bankroll = 1000
         self.current_bet = 0
 
@@ -218,7 +218,7 @@ class Pictures:
                     
                     
         if self.end_stage==True:
-            # Load up text
+            # Load up text elements
             self.lost_text = self.settings.font.render(
                 "Sorry, you lost this hand! Press R to play a new hand or Q to exit!",
                 True,
@@ -228,7 +228,7 @@ class Pictures:
                 f"Congratulations, you won {self.current_bet} coins! Press R to play a new hand or Q to exit!",
                 True,
                 self.settings.text_color)
-                
+
             self.lost_text_x = self.screen_center_x
             self.lost_text_y = self.screen_center_y - self.lost_text.get_rect()[3]//2
 
@@ -236,16 +236,22 @@ class Pictures:
             self.win_text_y = self.screen_center_y - self.win_text.get_rect()[3]//2
 
 
-
             screen.playerscreen.blitme()
             screen.computerscreen.blitme()
-            
-            if self.settings.over_21==True or (screen.playerscreen.points_cards<=screen.computerscreen.points_cards and screen.computerscreen.points_cards<22):
-                self.screen.blit(self.lost_text,(self.lost_text_x,self.lost_text_y))
-                self.settings.bankroll-=self.settings.current_bet
-                self.settings.end_stage=False
 
-            if (screen.playerscreen.points_cards>screen.computerscreen.points_cards and self.settings.over_21==False) or (screen.playerscreen.points_cards<22 and screen.computerscreen.points_cards>21):
-                self.screen.blit(self.win_text,(self.win_text_x,self.win_text_y))
-                self.settings.bankroll+=self.settings.current_bet
-                self.settings.end_stage=False
+            
+            if self.over_21 == True or ( screen.playerscreen.points_cards <= screen.computerscreen.points_cards and screen.computerscreen.points_cards < 22):
+                self.screen.blit( self.lost_text, ( self.lost_text_x, self.lost_text_y ))
+                
+                if self.update==False:
+                    self.bankroll -= self.current_bet
+                    self.update=True
+
+
+
+            if (screen.playerscreen.points_cards > screen.computerscreen.points_cards and self.over_21 == False) or (screen.playerscreen.points_cards < 22 and screen.computerscreen.points_cards > 21):
+                self.screen.blit( self.win_text,( self.win_text_x, self.win_text_y ))
+                if self.update==False:
+                    self.bankroll += self.current_bet
+                    self.update=True
+  

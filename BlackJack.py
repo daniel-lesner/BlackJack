@@ -30,8 +30,9 @@ class BlackJack:
 
     def _check_status_of_game(self):
         if self.playerscreen.points_cards > 21:
-            self.pictures.end_stage = self.pictures.over_21 = True
             self.pictures.play_stage = False
+            self.pictures.end_stage = self.pictures.over_21 = True
+
 
             
     def _check_events(self):
@@ -130,7 +131,6 @@ class BlackJack:
         self.pictures.blitme(self)
         # Make the most recently drawn screen visible
         pygame.display.flip()
-        print(self.pictures.current_bet)
 
 
     def _redeal_hand(self):
@@ -140,7 +140,7 @@ class BlackJack:
         self.playerscreen.remake_cards()
         self.computerscreen.stage="Player"
         self.pictures.current_bet=0
-        self.pictures.player_hit=False
+        self.pictures.player_hit = self.pictures.update = False
         if self.pictures.bankroll<=0:
             self.pictures.bankroll=1000
 
