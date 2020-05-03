@@ -108,7 +108,7 @@ class Pictures:
 
 
 
-        # Set up END GAME stage element's coordinates
+
 
 
 
@@ -228,12 +228,13 @@ class Pictures:
                 f"Congratulations, you won {self.current_bet} coins! Press R to play a new hand or Q to exit!",
                 True,
                 self.settings.text_color)
+                
+            # Set up END GAME stage element's coordinates
+            self.lost_text_x = self.screen_center_x - self.lost_text.get_rect()[2]//2
+            self.lost_text_y = self.screen_center_y - self.lost_text.get_rect()[3]
 
-            self.lost_text_x = self.screen_center_x
-            self.lost_text_y = self.screen_center_y - self.lost_text.get_rect()[3]//2
-
-            self.win_text_x = self.screen_center_x
-            self.win_text_y = self.screen_center_y - self.win_text.get_rect()[3]//2
+            self.win_text_x = self.screen_center_x -  self.win_text.get_rect()[2]//2
+            self.win_text_y = self.screen_center_y - self.win_text.get_rect()[3]
 
 
             screen.playerscreen.blitme()
