@@ -4,8 +4,17 @@ Suitable for a 1920x1080 screen, however, it can also work on larger or smaller 
 
 Dependent modules: pygame, random, sys and pyautogui.
 
-Please install the dependent modules and run the "BlackJack.py" script.
+Please install the dependent modules and run the "Main.py" script.
 
 Special thanks to Tudor Gall for heplping me with the design of the game!
 
 PS: game is not 100% finished, it needs some polishing, but it is playable!
+
+
+To Do List:\
+Move settings.py to root folder\
+Add end game reset or quit buttons\
+Restrict player to double is bankroll is less than new doubled bet
+
+Bugs:\
+If player has two identical cards, one of them does not appear on the screen
