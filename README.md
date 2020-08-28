@@ -14,7 +14,9 @@ PS: game is not 100% finished, it needs some polishing, but it is playable!
 To Do List:\
 Move settings.py to root folder\
 Add end game reset or quit buttons\
-Restrict player to double is bankroll is less than new doubled bet
+Restrict player to double is bankroll is less than new doubled bet\
+Add all-in button\
 
 Bugs:\
-If player has two identical cards, one of them does not appear on the screen
+If player has two identical cards, one of them does not appear on the screen\
+When you double and get over 21 and player has 20, you win instead of losing\

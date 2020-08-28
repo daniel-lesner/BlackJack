@@ -11,16 +11,18 @@ class BlackJack:
         # Initialize the game and settings from Settings class
         pygame.init()
         
-
         # Initialize the game screen in fullscreen mode
         self.screen = pygame.display.set_mode ((0, 0), pygame.FULLSCREEN)        
         
-
         # Creates instances of te other classes     
         self.settings = Settings(self)
         self.playerscreen = Cards (self, "Player")
         self.computerscreen = Cards (self, "Dealer")   
         self.pictures = Pictures(self)
+
+        # Deal first hand to each player
+        self.computerscreen.dealHand()
+        self.playerscreen.dealHand()
     
     def playGame(self):
         '''Start the main loop of the game'''
@@ -34,7 +36,6 @@ class BlackJack:
         if self.playerscreen.cardPoints > 21:
             self.pictures.play_stage = False
             self.pictures.end_stage = self.pictures.over_21 = True
-
 
             
     def _checkEvents(self):
@@ -53,8 +54,8 @@ class BlackJack:
                 event.button == 1 and 
                 self.pictures.intro
             ):
-
                 mouse=pygame.mouse.get_pos()
+
                 # Press PLAY button
                 if (mouse[0] in range(
                     self.pictures.intro_play_x,
@@ -209,12 +210,11 @@ class BlackJack:
         # Make the most recently drawn screen visible
         pygame.display.flip()
 
-
     def _redeal_hand(self):
         self.pictures.bet_stage = True
         self.pictures.end_stage = self.pictures.over_21 = False
-        self.computerscreen.remake_cards()
-        self.playerscreen.remake_cards()
+        self.computerscreen.dealHand()
+        self.playerscreen.dealHand()
         self.computerscreen.stage = "Player"
         self.pictures.current_bet = 0
         self.pictures.player_hit = self.pictures.update = False

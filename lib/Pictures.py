@@ -21,7 +21,6 @@ class Pictures:
         self.screen_center_x = self.screen_rect_center[0]
         self.screen_center_y = self.screen_rect_center[1]
 
-
         # Initalize flags and other variables
         self.intro = True
         self.player_has_hit = self.play_stage = self.end_stage = False
@@ -37,14 +36,12 @@ class Pictures:
         self.intro_quit = pygame.image.load("assets/Quit.png")
         self.intro_play = pygame.image.load("assets/Play.png")
 
-
         # Load BET STAGE menu pictures
         self.bet_100 = pygame.image.load("assets/100.png")
         self.bet_200 = pygame.image.load("assets/200.png")
         self.bet_500 = pygame.image.load("assets/500.png")
         self.bet_done = pygame.image.load("assets/submit.png")
         self.bet_reset = pygame.image.load("assets/reset.png")
-
 
         # Load ACTUAL GAME STAGE menu pictures
         self.play_hit = pygame.image.load("assets/Hit.png")
@@ -213,7 +210,7 @@ class Pictures:
                 (self.play_hit_x, self.play_hit_y)
             )
         
-            if not self.player_hit:
+            if not self.player_hit and self.bankroll >= 2 * self.current_bet:
                 self.screen.blit(
                     self.play_double,
                     (self.play_double_y, self.play_double_y)
@@ -272,7 +269,7 @@ class Pictures:
                     self.update = True
 
 
-
+                     
             if ((
                 screen.playerscreen.cardPoints > screen.computerscreen.cardPoints and 
             not self.over_21

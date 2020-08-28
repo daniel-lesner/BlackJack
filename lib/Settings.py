@@ -12,16 +12,13 @@ class Settings:
         self.textColor = (0, 0, 0)
         self.backgroundColor = (34, 180, 115)
 
-
         # Pair the settings with the main screen
         self.screen_rect = screen.screen.get_rect()
-        
         
         # Get the screen's resolution
         self.screen_length = pyautogui.size()[0]
         self.screen_height = pyautogui.size()[1]
         
-
         # Size of player and comp texts
         self.space_x = self.screen_length // 25
         self.space_y = self.screen_height // 25
