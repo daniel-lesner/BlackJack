@@ -16,10 +16,9 @@ class Cards:
         available in a deck (along with a pair of 4 Small Acess) and the 
         corresponding point value for each card
         '''
-        self.pointsDict = {}
-        self.cards = ["Asmall"] + list(range(2,11)) +["J","Q","K","A"]
+        self.cards = ["Asmall"] + list(range(2, 11)) + ["J", "Q", "K", "A"]
         self.cardSuits = ["HEARTS","DIAMONDS","SPADES","CLUBS"]
-        self.points = sorted((list(range(1,12)) + [10] * 3) * 4)
+        self.points = sorted((list(range(1, 12)) + [10] * 3) * 4)
         self.cardDeck = [f"{i} of {j}" for i in self.cards for j in self.cardSuits]
         self.pointsDict = {i:self.points[self.cardDeck.index(i)] for i in self.cardDeck}
 
@@ -28,28 +27,27 @@ class Cards:
         self.cardPoints = 0
         self.player_cards= [
             self.cardDeck[random.randint(4, 55)],
-            self.cardDeck[random.randint(4, 55)]]       
+            self.cardDeck[random.randint(4, 55)]
+        ] 
     
 
     def hit_card(self):
-        self.player_cards.append(self.cardDeck[random.randint(0,51)])
+        self.player_cards.append(self.cardDeck[random.randint(0, 51)])
 
     
     def blitme(self):
         self.cardPoints = 0
         for each_card_in_hand in self.player_cards:
             self.cardPoints += self.pointsDict[each_card_in_hand]
-            
+        
         if self.cardPoints > 21:
-            i = 0
             for each_card in self.player_cards:
                 if "A of" in each_card:
-                    self.cardPoints-=10
-                    self.player_cards[i]=self.player_cards[i].replace("A of","Asmall of")
+                    self.cardPoints -= 10
+                    self.player_cards[self.player_cards.index(each_card)].replace("A of","Asmall of")
                     break
-                i += 1
+
                     
-        
         self.position_of_cards = []
 
         self.list_of_cards = [

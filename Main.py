@@ -98,7 +98,7 @@ class BlackJack:
                     mouse[1] in range(
                         self.pictures.bet_done_y,
                         self.pictures.bet_done_y + self.pictures.bet_done.get_rect()[3]
-                    )
+                    ) and self.pictures.current_bet > 0
                 ):
                     self.pictures.play_stage = True
                     self.pictures.bet_stage = False
@@ -183,9 +183,10 @@ class BlackJack:
                     self.pictures.play_double_x + self.pictures.play_double.get_rect()[2]
                     ) and  
                     mouse[1] in range(
-                        self.pictures.play_double_y, self.pictures.play_double_y+self.pictures.play_double.get_rect()[3]
-                    ) and 
-                    self.pictures.player_hit == False
+                        self.pictures.play_double_y, 
+                        self.pictures.play_double_y + self.pictures.play_double.get_rect()[3]
+                    ) and not self.pictures.player_hit and
+                    self.pictures.bankroll >= 2 * self.pictures.current_bet
                 ):
                     self.playerscreen.hit_card()
                     self.computerscreen.stage = "Dealer"
