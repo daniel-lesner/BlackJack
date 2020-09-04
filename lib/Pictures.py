@@ -4,7 +4,7 @@ import pygame
 class Pictures:
     def __init__(self,screen):
         ''' 
-        With this class I am going to load the pictures and texts that will 
+        This class loads the pictures, buttonts and text messages that will 
         show up in the different stages of the game
         '''
         # Initialize the game screen and load dependent classes
@@ -197,10 +197,9 @@ class Pictures:
                 (self.bet_reset_x, self.bet_reset_y)
             )
             
-    
         if self.play_stage:
             if screen.playerscreen.cardPoints == 21:
-                screen.computerscreen.stage = "Dealer"
+                screen.computerself.playerTurn = False
             
             screen.playerscreen.blitme()
             screen.computerscreen.blitme()
@@ -221,7 +220,7 @@ class Pictures:
                 (self.play_stand_x, self.play_stand_y)
             )
             
-            if screen.computerscreen.stage == "Dealer":
+            if not screen.computerscreen.playerTurn:
                 if screen.computerscreen.cardPoints < 17:
                     screen.computerscreen.hit_card()
 
@@ -267,9 +266,7 @@ class Pictures:
                 if not self.update:
                     self.bankroll -= self.current_bet
                     self.update = True
-
-
-                     
+                              
             if ((
                 screen.playerscreen.cardPoints > screen.computerscreen.cardPoints and 
             not self.over_21

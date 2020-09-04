@@ -4,12 +4,11 @@ import pygame
 
 class Cards:
     def __init__(self, game, player):
-        ### Initialize flags and other variables
         self.game = game
         self.gameScreen = game.screen
         self.gameRect = self.gameScreen.get_rect()
         self.player = player
-        self.stage = "Player"
+        self.playerTurn = True
 
         '''
         Here, we create a dictionary which contains each of the 52 cards 
@@ -17,93 +16,75 @@ class Cards:
         corresponding point value for each card
         '''
         self.cards = ["Asmall"] + list(range(2, 11)) + ["J", "Q", "K", "A"]
-        self.cardSuits = ["HEARTS","DIAMONDS","SPADES","CLUBS"]
+        self.cardSuits = ["HEARTS", "DIAMONDS", "SPADES", "CLUBS"]
         self.points = sorted((list(range(1, 12)) + [10] * 3) * 4)
-        self.cardDeck = [f"{i} of {j}" for i in self.cards for j in self.cardSuits]
-        self.pointsDict = {i:self.points[self.cardDeck.index(i)] for i in self.cardDeck}
+        self.cardDeck = [
+            f"{i} of {j}" for i in self.cards for j in self.cardSuits
+        ]
+        self.pointsDict = {
+            i:self.points[self.cardDeck.index(i)] for i in self.cardDeck
+        }
 
 
     def dealHand(self):
         self.cardPoints = 0
-        self.player_cards= [
+        self.playerCards = [
             self.cardDeck[random.randint(4, 55)],
             self.cardDeck[random.randint(4, 55)]
         ] 
     
 
     def hit_card(self):
-        self.player_cards.append(self.cardDeck[random.randint(0, 51)])
+        self.playerCards.append(self.cardDeck[random.randint(4, 55)])
 
     
     def blitme(self):
-        self.cardPoints = 0
-        for each_card_in_hand in self.player_cards:
-            self.cardPoints += self.pointsDict[each_card_in_hand]
+        self.cardPoints = sum([self.pointsDict[eachCard] for eachCard in self.playerCards])
         
+        # Attribute a value of 1 to one Ace card in case player has over 21
         if self.cardPoints > 21:
-            for each_card in self.player_cards:
+            for each_card in self.playerCards:
                 if "A of" in each_card:
                     self.cardPoints -= 10
-                    self.player_cards[self.player_cards.index(each_card)].replace("A of","Asmall of")
+                    self.playerCards[self.playerCards.index(each_card)].replace("A of", "Asmall of")
                     break
 
-                    
-        self.position_of_cards = []
-
-        self.list_of_cards = [
-            "assets/cards/" + eachCard + ".png" for eachCard in self.player_cards
+        self.cardsList = [
+            "assets/cards/" + eachCard + ".png" for eachCard in self.playerCards
             ]   
      
-        if self.player == "Player":
-            for i in range(len(self.list_of_cards)):
-                self.y = (self.gameRect[2] // 3 + i * 100, self.gameRect[3] // 2)
-                self.position_of_cards.append(self.y)
+        if self.playerTurn and self.player == "Dealer":
+            self.textMessage = " has at least "
+            self.cardPoints = self.pointsDict[self.playerCards[0]]
+        else:
+            self.textMessage = " has "
 
-            
-            for md in self.list_of_cards:
-                self.xyz=pygame.image.load(md)
-                self.gameScreen.blit(self.xyz,self.position_of_cards[self.list_of_cards.index(md)])
-            
-            
-            self.text=self.game.settings.font.render(
-                f" {self.player} has {self.cardPoints} points!",
-                True, self.game.settings.textColor
+        if self.player == "Player":
+            self.cardsPosition = [(self.gameRect[2]//3 + i*100, self.gameRect[3]//2) for i in range(len(self.cardsList))]
+        else: 
+            self.cardsPosition = [(self.gameRect[2]//3 + i*100, self.gameRect[3]//9) for i in range(len(self.cardsList))]
+
+        for eachCard in self.cardsList:
+            self.cardImage = pygame.image.load(eachCard)
+            self.gameScreen.blit(
+                self.cardImage, 
+                self.cardsPosition[self.cardsList.index(eachCard)]
+            )
+            if self.player == "Dealer" and self.playerTurn: break
+
+        self.text = self.game.settings.font.render(
+            f" {self.player} {self.textMessage} {self.cardPoints} points!",
+            True,
+            self.game.settings.textColor
+        )
+
+        if self.player == "Player":
+            self.gameScreen.blit(self.text, (
+                self.gameRect.center[0] - self.text.get_rect()[2],
+                self.gameRect[3] * 3 // 4
                 )
-            
+            )
+        else:
             self.gameScreen.blit(self.text,(
-                self.gameRect.center[0]-self.text.get_rect()[2]
-                ,self.gameRect[3]*3//4)
-                )
-           
-           
-        if self.player=="Dealer":  
-            for i in range(len(self.list_of_cards)):
-                self.y=(self.gameRect[2]//3+i*100, self.gameRect[3]//9)
-                self.position_of_cards.append(self.y)            
-            
-            if self.stage=="Player":
-                self.text2=self.game.settings.font.render(
-                    f" {self.player} has at least {self.pointsDict[self.player_cards[0]]} points!",
-                    True, self.game.settings.textColor
-                    )
-                
-                self.gameScreen.blit(self.text2,(
-                    self.gameRect.center[0]-self.text2.get_rect()[2],
-                    self.gameRect[3]//12))
-                
-                self.xyz=pygame.image.load(self.list_of_cards[0])
-                self.gameScreen.blit(self.xyz,self.position_of_cards[0])
-                
-            else:
-                self.text2=self.game.settings.font.render(
-                    f" {self.player} has {self.cardPoints} points!",
-                    True, self.game.settings.textColor
-                    )
-                
-                self.gameScreen.blit(self.text2,(
-                    self.gameRect.center[0]-self.text2.get_rect()[2],
-                    self.gameRect[3]//12))
-                
-                for md in self.list_of_cards:
-                    self.xyz=pygame.image.load(md)
-                    self.gameScreen.blit(self.xyz,self.position_of_cards[self.list_of_cards.index(md)])  
+                self.gameRect.center[0]-self.text.get_rect()[2],
+                self.gameRect[3]//12))

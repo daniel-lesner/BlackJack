@@ -57,7 +57,8 @@ class BlackJack:
                 mouse=pygame.mouse.get_pos()
 
                 # Press PLAY button
-                if (mouse[0] in range(
+                if (
+                    mouse[0] in range(
                     self.pictures.intro_play_x,
                     self.pictures.intro_play_x + self.pictures.intro_play.get_rect()[2]
                     ) and 
@@ -147,11 +148,13 @@ class BlackJack:
                 if (
                     mouse[0] in range(
                     self.pictures.bet_reset_x,
-                    self.pictures.bet_reset_x + self.pictures.bet_reset.get_rect()[2]
+                    self.pictures.bet_reset_x
+                    + self.pictures.bet_reset.get_rect()[2]
                     ) and  
                     mouse[1] in range(
                         self.pictures.bet_reset_y,
-                        self.pictures.bet_reset_y + self.pictures.bet_reset.get_rect()[3]
+                        self.pictures.bet_reset_y
+                        + self.pictures.bet_reset.get_rect()[3]
                     )
                 ):
                     self.pictures.current_bet = 0
@@ -161,16 +164,18 @@ class BlackJack:
                 event.button == 1 and 
                 self.pictures.play_stage
             ):
-                mouse=pygame.mouse.get_pos()
+                mouse = pygame.mouse.get_pos()
            
                 if (
                     mouse[0] in range(
-                    self.pictures.play_hit_x,
-                    self.pictures.play_hit_x + self.pictures.play_hit.get_rect()[2]
+                        self.pictures.play_hit_x,
+                        self.pictures.play_hit_x
+                        + self.pictures.play_hit.get_rect()[2]
                     ) and  
                     mouse[1] in range(
                         self.pictures.play_hit_y,
-                        self.pictures.play_hit_y + self.pictures.play_hit.get_rect()[3]
+                        self.pictures.play_hit_y
+                        + self.pictures.play_hit.get_rect()[3]
                     )
                 ):
                     self.pictures.player_has_hit = True
@@ -179,30 +184,34 @@ class BlackJack:
 
                 if (
                     mouse[0] in range(
-                    self.pictures.play_double_x,
-                    self.pictures.play_double_x + self.pictures.play_double.get_rect()[2]
+                        self.pictures.play_double_x,
+                        self.pictures.play_double_x
+                        + self.pictures.play_double.get_rect()[2]
                     ) and  
                     mouse[1] in range(
                         self.pictures.play_double_y, 
-                        self.pictures.play_double_y + self.pictures.play_double.get_rect()[3]
-                    ) and not self.pictures.player_hit and
-                    self.pictures.bankroll >= 2 * self.pictures.current_bet
+                        self.pictures.play_double_y 
+                        + self.pictures.play_double.get_rect()[3]
+                    ) and not self.pictures.player_hit 
+                    and self.pictures.bankroll >= 2 * self.pictures.current_bet
                 ):
                     self.playerscreen.hit_card()
-                    self.computerscreen.stage = "Dealer"
+                    self.computerscreen.playerTurn = False
                     self.pictures.current_bet *= 2
 
                 if (
                     mouse[0] in range(
                         self.pictures.play_stand_x,
-                        self.pictures.play_stand_x + self.pictures.play_stand.get_rect()[2]
+                        self.pictures.play_stand_x 
+                        + self.pictures.play_stand.get_rect()[2]
                     ) and  
                     mouse[1] in range(
                         self.pictures.play_stand_y,
-                        self.pictures.play_stand_y + self.pictures.play_stand.get_rect()[3]
+                        self.pictures.play_stand_y 
+                        + self.pictures.play_stand.get_rect()[3]
                     )
                 ):
-                     self.computerscreen.stage = "Dealer"
+                     self.computerscreen.playerTurn = False
 
     def _updateScreen(self):
         '''Update images on the screen, and flip to new screen'''
@@ -216,13 +225,12 @@ class BlackJack:
         self.pictures.end_stage = self.pictures.over_21 = False
         self.computerscreen.dealHand()
         self.playerscreen.dealHand()
-        self.computerscreen.stage = "Player"
+        self.computerscreen.playerTurn = False
         self.pictures.current_bet = 0
         self.pictures.player_hit = self.pictures.update = False
-        if self.pictures.bankroll <= 0:
-            self.pictures.bankroll = 1000
+        if self.pictures.bankroll <= 0: self.pictures.bankroll = 1000
 
 
-if __name__=='__main__':
-    bj=BlackJack()
-    bj.playGame()
+if __name__ == '__main__':
+    jack = BlackJack()
+    jack.playGame()
